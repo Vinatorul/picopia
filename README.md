@@ -7,7 +7,7 @@ A tiny cozy PICO-8 demake prototype about restoring a broken fantasy-console gar
 - `picopia.p8` — main Picopia cartridge.
 - `plans/picopia-design.md` — approved design spec.
 - `scripts/pico8_verify_cart.py` — reusable structure verifier for PICO-8 carts.
-- `scripts/picopia_apply_gfx.py` — reusable Picopia sprite-sheet generator.
+- `scripts/picopia_apply_assets.py` — reusable Picopia graphics and sound generator.
 
 ## Verify
 
@@ -15,9 +15,8 @@ A tiny cozy PICO-8 demake prototype about restoring a broken fantasy-console gar
 python3 scripts/pico8_verify_cart.py picopia.p8
 ```
 
-## Regenerate Picopia graphics
+## Regenerate Picopia graphics and sounds
 
 ```sh
-python3 scripts/picopia_apply_gfx.py picopia.p8
+python3 scripts/picopia_apply_assets.py picopia.p8
 ```
-

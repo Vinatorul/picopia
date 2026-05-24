@@ -52,24 +52,36 @@ function _init()
  fx={}
  complete=false
  pix=0
- house_cost=8
+ house_cost=30
  house_built=false
  house={x=0,y=0}
+ goal=1
+ quest=true
+ build_menu=false
+ build_sel=1
+ build_items={{name="tiny home",cost=30,spr=12}}
+ help=true
  tw=0
 end
 
 function _update()
  tw+=1
  update_fx()
- if btn(4) then
-  if btnp(0) then cycle_helper(-1) end
-  if btnp(1) then cycle_helper(1) end
- else
-  move_input()
+ if help then
+  if btnp(4) or btnp(5) then help=false sfx(4) end
+  return
  end
- if btnp(5) then
-  if complete then build_house() else use_helper() end
+ if quest then
+  if btnp(4) or btnp(5) then quest=false sfx(4) end
+  return
  end
+ if build_menu then
+  update_build_menu()
+  return
+ end
+ if btnp(4) then cycle_helper(1) end
+ move_input()
+ if btnp(5) then act() end
  check_done()
 end
 
@@ -107,60 +119,103 @@ function can_walk(x,y)
 end
 
 function cycle_helper(d)
+ local max=#helpers+1
  active+=d
- if active<1 then active=#helpers end
- if active>#helpers then active=1 end
- say(helpers[active].name,35)
- add_fx(player.x,player.y,helpers[active].c,"swap")
+ if active<1 then active=max end
+ if active>max then active=1 end
+ if active>#helpers then
+  say("build",35)
+  sfx(0)
+  add_fx(player.x,player.y,14,"swap")
+ else
+  say(helpers[active].name,35)
+  sfx(0)
+  add_fx(player.x,player.y,helpers[active].c,"swap")
+ end
+end
+
+function act()
+ if active>#helpers then
+  build_menu=true
+  say("choose build",30)
+  sfx(4)
+  return
+ end
+ if use_helper() then return end
+ nope()
+end
+
+function update_build_menu()
+ if btnp(4) then
+  build_menu=false
+  return
+ end
+ if btnp(5) then
+  if build_item(build_items[build_sel]) then build_menu=false end
+ end
 end
 
 function use_helper()
  local tx=player.x+player.dx
  local ty=player.y+player.dy
- if tx<1 or tx>16 or ty<1 or ty>16 then
-  nope()
-  return
- end
+ if tx<1 or tx>16 or ty<1 or ty>16 then return false end
  local h=helpers[active]
  local t=grid[ty][tx]
  if t==h.src then
   grid[ty][tx]=h.dst
   h.used=true
   pix+=h.p
+  sfx(1)
   add_fx(tx,ty,h.c,h.name)
   say("+"..h.p.." px",25)
- else
-  nope()
+  return true
  end
+ return false
 end
 
 function nope()
  say("nope",20)
+ sfx(2)
  add_fx(player.x+player.dx,player.y+player.dy,5,"nope")
 end
 
-function build_house()
- if house_built then
-  say("home is cozy",35)
-  return
+function build_item(item)
+ if item.name=="tiny home" and house_built then
+  say("already built",35)
+  sfx(2)
+  return false
  end
  local tx=player.x+player.dx
  local ty=player.y+player.dy
  if tx<1 or tx>16 or ty<1 or ty>16 then
-  nope()
-  return
+  say("bad spot",35)
+  sfx(2)
+  return false
  end
  local t=grid[ty][tx]
- if pix>=house_cost and (t==t_grass or t==t_flower or t==t_soil) then
+ if pix<item.cost then
+  say("need "..item.cost.." px",45)
+  sfx(2)
+  return false
+ end
+ if t==t_brush then
+  say("clear first",45)
+  sfx(2)
+  return false
+ end
+ if item.name=="tiny home" then
   house_built=true
   house.x=tx
   house.y=ty
-  pix-=house_cost
+  pix-=item.cost
+  goal=3
+  quest=true
+  sfx(3)
   add_fx(tx,ty,14,"house")
-  say("tiny home!",80)
- else
-  nope()
+  say("all goals done!",160)
+  return true
  end
+ return false
 end
 
 function add_fx(x,y,c,kind)
@@ -203,7 +258,11 @@ end
 function check_done()
  if not complete and used_count()>=3 and restored_count()>=6 then
   complete=true
-  say("build home:8px",240)
+  goal=2
+  quest=true
+  active=#helpers+1
+  say("goal done: use build",240)
+  sfx(3)
   for i=1,24 do
    add_fx(rnd(16)+1,rnd(12)+2,7+flr(rnd(5)),"spark")
   end
@@ -218,7 +277,9 @@ function _draw()
  draw_player()
  draw_fx()
  draw_hud()
- if house_built then draw_complete() end
+ if build_menu then draw_build_menu() end
+ if quest then draw_quest() end
+ if help then draw_help() end
 end
 
 function draw_world()
@@ -270,28 +331,68 @@ end
 
 function draw_hud()
  rectfill(0,112,127,127,0)
- local h=helpers[active]
- spr(8+active,34,114)
  print("picopia",2,114,7)
- print(h.name,44,114,h.c)
- print("px:"..pix.."/"..house_cost,2,122,6)
- print("garden:"..restored_count(),42,122,11)
- if house_built then print("home!",82,114,14) end
- if msg_t>0 then print(msg,78,122,7) end
+ if active>#helpers then
+  spr(12,34,114)
+  print("o:build",44,114,14)
+ else
+  local h=helpers[active]
+  spr(8+active,34,114)
+  print("o:"..h.name,44,114,h.c)
+ end
+ print("px:"..pix,2,122,6)
+ if msg_t>0 then print(msg,56,122,7) end
+end
+
+function draw_build_menu()
+ local item=build_items[build_sel]
+ rectfill(18,34,109,88,0)
+ rect(18,34,109,88,7)
+ print("build",52,40,14)
+ spr(item.spr,28,54)
+ print(item.name,42,54,7)
+ print("cost:"..item.cost.."px",42,64,6)
+ print("x build",30,78,11)
+ print("o close",72,78,5)
+end
+
+function draw_quest()
+ rectfill(14,28,113,92,0)
+ rect(14,28,113,92,7)
+ print("quest",52,34,11)
+ if goal==1 then
+  print("restore garden",26,48,7)
+  print("use 3 helpers",26,58,10)
+  print("grow 6 flowers",26,68,11)
+ elseif goal==2 then
+  print("quest complete!",22,48,11)
+  print("next: build home",22,60,14)
+  print("select build tool",22,70,7)
+ else
+  print("all quests done!",22,48,14)
+  print("free play unlocked",20,60,11)
+  print("keep restoring",26,70,7)
+ end
+ print("press o/x",40,84,6)
+end
+
+function draw_help()
+ rectfill(12,24,115,94,0)
+ rect(12,24,115,94,7)
+ print("picopia",48,30,11)
+ print("arrows: move",28,44,7)
+ print("o: tool",28,54,10)
+ print("x: use tool",28,64,12)
+ print("build tool:",24,76,11)
+ print("o select, x menu",24,86,14)
 end
 
 function draw_complete()
  rectfill(16,42,111,84,0)
  rect(16,42,111,84,7)
- if house_built then
-  print("picopia has home",24,50,14)
-  print("sproutroot smiles",25,62,7)
-  print("tiny world lives",26,72,12)
- else
-  print("garden restored",30,50,11)
-  print("collect 8 pixels",26,62,7)
-  print("press x to build",25,72,12)
- end
+ print("all goals done",30,50,14)
+ print("keep restoring",28,62,7)
+ print("free play",42,72,12)
  for i=0,7 do
   local x=20+i*12
   local y=45+sin((tw+i)/20)*4
@@ -427,3 +528,9 @@ __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+__sfx__
+000100000c0500f050120501505018050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00010000180501b0501e0502105024050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0001000015050120500f0500c05009050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000100002005024050280502c05030050340500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000100001005014050180501c05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

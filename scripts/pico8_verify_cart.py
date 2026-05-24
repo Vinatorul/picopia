@@ -4,8 +4,9 @@ from pathlib import Path
 
 def read_cart(path):
     text = Path(path).read_text()
-    code, sep, gfx = text.partition("__gfx__\n")
-    return text, code, gfx if sep else ""
+    code, _, rest = text.partition("__gfx__\n")
+    gfx, _, sfx = rest.partition("__sfx__\n")
+    return text, code, gfx, sfx
 
 
 def get_rows(code):
@@ -24,9 +25,10 @@ def get_rows(code):
 
 
 def check(path):
-    text, code, gfx = read_cart(path)
+    text, code, gfx, sfx = read_cart(path)
     rows = get_rows(code)
     gfx_rows = gfx.splitlines() if gfx else []
+    sfx_rows = sfx.splitlines() if sfx else []
     checks = {
         "file_exists": Path(path).exists(),
         "ends_with_newline": text.endswith("\n"),
@@ -35,6 +37,7 @@ def check(path):
         "has_core_functions": all(s in code for s in ["function _init()", "function _update()", "function _draw()"]),
         "rows_table_16x16": len(rows) == 16 and all(len(r) == 16 for r in rows),
         "gfx_section_128x128": len(gfx_rows) == 128 and all(len(r) == 128 for r in gfx_rows),
+        "sfx_rows_valid": not sfx_rows or all(len(r) == 168 for r in sfx_rows),
     }
     return checks
 
