@@ -20,22 +20,25 @@ Quest-giver direction:
 
 ## Expanded Quest Direction
 
-1. Meet a watering creature and revive dry plants to unlock Watbit.
-2. Meet a moisture-aware creature that comments on the town's humidity and points toward watering goals.
-3. Complete challenges such as finding creatures, watering trees, gathering berries, or gathering branches for money, item, or badge rewards.
-4. Feed a creature using food gathered from trees or plants to unlock a new ability or recipe.
-5. Craft a grass home so creatures start visiting the restored area.
-6. Move a creature into a suitable home after its needs are met.
-7. Use hints to learn which home type or furniture each creature wants.
-8. Craft furniture for creatures to improve their comfort and living conditions.
-9. Raise the environment level by discovering new creatures and improving their living conditions.
-10. Use the higher environment level to unlock harder challenges and better shop stock.
-11. Buy seeds before planting flowers.
-12. Use a rototiller-style helper to prepare farm plots for vegetables and flowers.
-13. Grow simple vegetables as food, quest items, or shop/crafting resources.
-14. Buy a player-home blueprint from the shop, then ask or recruit a builder creature to construct it.
-15. Craft a campfire, then ask or recruit a fire-capable creature to light it.
-16. Reveal that the creature center was always present on the map and make restoring it the next major task.
+1. Meet Dewmop near the first dry tree and revive dry plants to unlock Watbit.
+2. Meet Mizzlekin, who comments on the town's humidity and points toward watering goals.
+3. Meet Pebblit near a rock-blocked path and clear rocks to unlock or reinforce Smashbit use.
+4. Complete challenges such as finding creatures, watering trees, gathering berries, or gathering branches for money, item, or badge rewards.
+5. Feed a creature using food gathered from trees or plants to unlock a new ability or recipe.
+6. Meet Seedle after restoring grass, then learn to plant flowers, bushes, and trees on revived grass.
+7. Craft a grass home so creatures start visiting the restored area.
+8. Move a creature into a suitable home after its needs are met.
+9. Use hints to learn which home type or furniture each creature wants.
+10. Craft furniture for creatures to improve their comfort and living conditions.
+11. Raise the environment level by discovering new creatures and improving their living conditions.
+12. Find the shop building or shopkeeper in the world.
+13. Use the higher environment level to unlock harder challenges and better shop stock.
+14. Buy seeds before planting flowers, trees, or vegetables.
+15. Meet Furrowl and use a rototiller-style helper to prepare farm plots for vegetables and flowers.
+16. Grow simple vegetables as food, quest items, or shop/crafting resources.
+17. Buy a player-home blueprint from the shop, then ask or recruit Framefinch to construct it.
+18. Craft a campfire, then ask or recruit Embernewt to light it.
+19. Reveal that the creature center was always present on the map and make restoring it the next major task.
 
 ## Challenges
 

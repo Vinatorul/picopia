@@ -32,9 +32,13 @@ Crafting should connect to restoration instead of becoming a separate economy. M
 Farming connects tilling, water, food, and shop progression.
 
 - A rototiller-style creature helper can improve Tillbit or act as the fiction for tilling prepared plots.
-- Prepared plots can accept vegetable seeds and flower seeds.
+- Tilled farm plots can accept vegetable seeds and flower seeds.
+- The vegetable loop should be: tilled plot -> watered plot -> planted vegetable -> grown vegetable -> harvested vegetable.
+- Watered plots can dry out later if the expanded moisture system needs light upkeep.
 - Vegetables can become food, quest items, or shop/crafting resources.
 - Flowers should require seeds in the expanded version instead of being free growth.
+- Flower seeds, bush seeds, and tree seeds can be planted on revived grass if the planting-on-grass rule is enabled.
+- Tree planting should create a young or planted tree state before becoming a revived tree.
 - A moisture-aware creature can report town humidity as a friendly hint system for dry areas, trees, and farming needs.
 
 ## Hunger and Energy

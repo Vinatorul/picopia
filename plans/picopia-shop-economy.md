@@ -24,7 +24,7 @@ Current and planned costs:
 
 ## Shop Role
 
-The shop should convert restoration progress into new options without replacing exploration and creature quests.
+The shop should exist as a discoverable shop building or shopkeeper location on the world map. It should convert restoration progress into new options without replacing exploration and creature quests.
 
 The shop can sell:
 
@@ -32,6 +32,8 @@ The shop can sell:
 - Food or recovery supplies.
 - Vegetable seeds.
 - Flower seeds.
+- Bush seeds or cuttings.
+- Tree seeds or saplings.
 - Recipes.
 - Blueprints.
 - Player-home blueprint.
@@ -48,6 +50,17 @@ It should increase when the player:
 - Feeds creatures.
 - Improves creature living conditions.
 - Restores meaningful terrain or town features.
+
+## Shop Discovery and Access
+
+The player should find the shop through exploration rather than receiving shop access as an abstract menu.
+
+Shop access rules:
+
+- The shop building or shopkeeper should be visible on the 32x32 world map.
+- Interacting with the shop opens the shop menu.
+- Early stock can be limited even before the environment level rises.
+- Stock expansion should be tied to environment level, creature quests, and major restoration milestones.
 
 ## Environment-Level Gating
 

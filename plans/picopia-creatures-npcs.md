@@ -38,11 +38,27 @@ A creature can:
 
 Example unlock direction:
 
-- A watering creature can unlock Watbit after Picoblob revives dry plants.
-- A rototiller-style creature can improve Tillbit or prepare farm plots.
-- A builder creature can help construct the player home after the blueprint is bought.
-- A fire-capable creature can light a crafted campfire.
-- A moisture-aware creature can comment on town humidity and point toward dry restoration targets.
+- Dewmop can unlock Watbit after Picoblob revives dry plants and waters a dry tree.
+- Furrowl can improve Tillbit or prepare farm plots after the player restores enough soil.
+- Seedle can expand Sproutbit planting so flowers, bushes, and trees can be planted on revived grass.
+- Pebblit can introduce Smashbit by asking the player to clear rocks from a blocked path.
+- Framefinch can help construct the player home after the blueprint is bought.
+- Embernewt can light a crafted campfire.
+- Mizzlekin can comment on town humidity and point toward dry restoration targets.
+
+## NPC Placement and Discovery
+
+NPCs should be physically discoverable in the world instead of existing only as menu text.
+
+Early creature placement examples:
+
+- Dewmop near dry soil and a dry tree tutorial area.
+- Furrowl near the first farmable clearing.
+- Seedle near revived grass or flower patches.
+- Pebblit near rock-blocked paths.
+- Framefinch near the player-home construction site.
+- Embernewt near late crafting or campfire goals.
+- Mizzlekin roaming or standing near humidity-sensitive dry terrain.
 
 ## Homes
 

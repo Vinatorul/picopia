@@ -4,7 +4,7 @@
 
 Picopia is a standalone PICO-8 cartridge about restoring a dried-out fantasy-console garden world. The implementation target is `picopia.p8`.
 
-The game takes place in a neglected fantasy-console clearing after humans have vanished or disappeared from daily life. Picoblob arrives in a dry world where soil, plants, tall grass, flowers, and trees have withered. Local creatures become the main guides: they ask Picoblob to restore parts of the land, feed them, craft useful objects, and build grass homes.
+The game takes place in a neglected fantasy-console clearing after humans have vanished or disappeared from daily life. Picoblob arrives in a dry world where the ground, grass, tall grass, bushes, flowers, trees, and farmable soil have withered. Green terrain should mostly appear as a result of restoration, so the starting map reads as broadly dry and neglected rather than already healthy. Local creatures become the main guides: they ask Picoblob to restore parts of the land, feed them, craft useful objects, build grass homes, and eventually construct a player home.
 
 ## Design Pillars
 
@@ -40,9 +40,12 @@ Picoblob can start with a minimal action set, while additional helper abilities 
 The key restoration chain is:
 
 ```text
-dry plant/bush -> soil -> dry soil -> wet soil -> revived grass/bush/flower
-rock -> soil -> dry soil -> wet soil -> grass/bush/flower
-grass/tall grass -> dry soil -> wet soil -> revived grass/bush/flower
+dry plant/bush -> soil -> dry soil -> wet soil -> revived grass/bush/flower/tree
+dry tree -> watered tree -> revived tree -> fruit/branch/seed source
+rock -> soil -> dry soil -> wet soil -> grass/bush/flower/tree
+dry grass/tall grass -> dry soil -> wet soil -> revived grass/bush/flower
+revived grass -> planted flower/bush/tree seed -> grown flower/bush/tree
+farm soil -> tilled plot -> watered plot -> planted vegetable -> grown vegetable
 ```
 
 This makes the soil left behind by clearing dry plants a useful normal stage instead of a dead-end sand tile.
@@ -59,24 +62,36 @@ The reusable asset generator is `scripts/picopia_apply_assets.py`. It generates:
 
 The normal regeneration path is `scripts/picopia_apply_assets.py`. One-time migration scripts are not part of the long-term asset pipeline.
 
+## World Objects and Locations
+
+The map should contain discoverable world locations, not only menu-only systems:
+
+- A shop building or shopkeeper location that the player can find while exploring.
+- Early creature homes or nests placed by the player through building or crafting.
+- A later player-home construction site that becomes usable after the shop blueprint and builder-creature requirements are met.
+- Distinct creature meeting spots so different NPCs feel physically present in the world.
+- Dry trees, rocks, dry grass, dry soil, bushes, and farm plots distributed across the larger map to encourage movement and camera-follow exploration.
+
 ## Tile Types and Sprite IDs
 
-Tile and sprite ids must match so PICO-8 editor view and runtime view are consistent:
+Tile and sprite ids must match so PICO-8 editor view and runtime view are consistent. Core terrain should be organized as paired restored and dried versions:
 
-- `0`: empty/reserved, not used for normal terrain.
-- `1`: grass.
-- `2`: bush blocker.
-- `3`: dry soil.
-- `4`: wet soil.
-- `5`: flower.
-- `6`: soil left by clearing bush.
-- `7-8`: Picoblob animation sprites.
-- `9`: Professor Sproutroot.
-- `10-12`: helper/tool icons.
-- `13`: tiny home/build icon.
-- `14`: rock tile and Smashbit icon.
-- `15`: Tillbit icon.
-- `16`: bush grown by Sproutbit.
+| Sprite id | Tile | Passability | Restoration role |
+| --- | --- | --- | --- |
+| `0` | Empty | Passable or unused by context | Reserved zero tile; not normal terrain. |
+| `1` | Grass | Passable | Restored base ground. Supports planting flowers, bushes, and trees when expanded planting is enabled. |
+| `2` | Dry grass | Passable | Starting-world dried version of grass; can be watered or restored through the restoration chain. |
+| `3` | Tall grass | Passable or slow/blocking by tuning | Restored gatherable grass source and habitat material. |
+| `4` | Dry tall grass | Passable or slow/blocking by tuning | Starting-world dried version of tall grass; can become tall grass or be cleared into usable material. |
+| `5` | Impassable bush | Blocking | Restored bush blocker, habitat object, and possible resource source. |
+| `6` | Dry impassable bush | Blocking | Starting-world dried bush; can be cleared, watered, or restored depending on tool progression. |
+| `7` | Tree | Blocking | Restored tree, food/branch/seed source, and visual restoration landmark. |
+| `8` | Dry tree | Blocking | Starting-world dried tree; can be watered into a restored tree. |
+| `9` | Fertile soil | Passable | Restored farmable earth for planting and crop support. |
+| `10` | Dry fertile soil | Passable | Starting-world dried earth; can be watered into fertile soil. |
+| `11` | Flowers | Passable | Restored flower patch for beauty, quests, creatures, and environment progress. |
+| `12` | Dry flowers | Passable | Starting-world dried flower patch; can be restored into flowers. |
+
 
 ## Visual Style
 
@@ -92,22 +107,3 @@ Guidelines:
 - Garden restoration shown through brighter greens, flowers, and sparkles.
 - Creature names and designs must be original fantasy-console creatures, not direct external character references.
 
-## Feedback and Effects
-
-Each tool should feel distinct:
-
-- Chopbit: slash particles and cut SFX.
-- Watbit: blue droplet particles and water SFX.
-- Sproutbit: green sparkle or growth pop and growth SFX.
-- Invalid action: small nope bounce and error SFX.
-- Quest complete/build complete: celebratory SFX and sparkles.
-
-## Out of Scope for Current Prototype
-
-- Full social simulation systems.
-- Real-time clock or day-night cycle.
-- Multiple biomes.
-- Dialogue trees.
-- Persistent save data.
-- Full expanded tool set.
-- Direct use of external character names, sprites, or copyrighted designs.

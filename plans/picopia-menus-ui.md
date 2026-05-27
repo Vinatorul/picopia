@@ -33,6 +33,13 @@ Initial grow options:
 - Bush: costs 0 px.
 - Flower: costs 0 px in the current prototype and should eventually require seeds bought from the shop.
 
+Expanded grow and planting options:
+
+- Tree: requires a tree seed or sapling and can be planted on wet soil or revived grass.
+- Flower planting on revived grass: requires flower seeds after the shop loop is enabled.
+- Bush planting on revived grass: requires bush seeds or cuttings if the expanded item loop needs a cost.
+- Vegetable planting: happens on tilled and watered farm plots, not in the normal grow menu unless the UI is intentionally merged.
+
 Expected behavior:
 
 - ❎ confirms the selected growth option.
@@ -69,7 +76,7 @@ Rules:
 
 ## Shop Menu
 
-The shop menu should sell items, seeds, recipes, and blueprints.
+The shop menu should be opened from a discoverable shop building or shopkeeper on the world map. It should sell items, seeds, recipes, and blueprints.
 
 Expected stock categories:
 
