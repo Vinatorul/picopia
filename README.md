@@ -13,10 +13,10 @@ A tiny cozy PICO-8 demake prototype about restoring a broken fantasy-console gar
 
 ## Configure output directory
 
-Set `PICO8_CART_DIR` in `.env` to the directory where the assembled cartridge should be written:
+Set `PICO8_CART_DIR` in `.env` to the directory where the assembled cartridge should be written. For example:
 
 ```env
-PICO8_CART_DIR=/Users/vinatorul/Projects/pico-8/carts
+PICO8_CART_DIR=/Users/vinatorul/pico-8/carts
 ```
 
 You can also override it per run with `--output-dir`.
